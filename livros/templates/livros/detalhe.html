@@ -9,5 +9,13 @@
     <p><strong>Categoria:</strong> {{ livro.categoria.nome }}</p>
     <p><strong>Status:</strong> {{ livro.disponivel|yesno:"Disponível,Emprestado" }}</p>
     <p><small>Cadastrado em {{ livro.criado_em|date:"d/m/Y H:i" }}</small></p>
+    <h2>Empréstimos</h2>
+    {% for emp in livro.emprestimos.all %}
+        <p>{{ emp.leitor.nome }} — {{ emp.data_emprestimo|date:"d/m/Y" }}
+           {% if emp.data_devolucao %}(devolvido em {{ emp.data_devolucao|date:"d/m/Y" }}){% else %}(em aberto){% endif %}</p>
+    {% empty %}
+        <p>Nenhum empréstimo.</p>
+    {% endfor %}
+
     <a href="{% url 'livros:lista' %}">← Voltar</a>
 {% endblock %}
