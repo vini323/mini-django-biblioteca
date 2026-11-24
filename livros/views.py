@@ -8,9 +8,10 @@ from django.shortcuts import render, get_object_or_404
 from .models import Livro
 
 
-# 1) View mais simples possível: devolve texto puro
+# 1) View simples: só renderiza um template, sem consultar o banco
+#    (versão mais simples ainda: return HttpResponse("texto"))
 def sobre(request):
-    return HttpResponse("Mini projeto Django - Biblioteca")
+    return render(request, "livros/sobre.html")
 
 
 # 2) View que busca no banco e renderiza um template

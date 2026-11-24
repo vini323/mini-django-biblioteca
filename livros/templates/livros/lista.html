@@ -3,19 +3,27 @@
 {% block titulo %}Livros{% endblock %}
 
 {% block conteudo %}
-    <h1>Livros ({{ total }})</h1>
+    <h2>Livros ({{ total }})</h2>
 
     {% if livros %}
-        <ul>
+        <div class="grade">
         {% for livro in livros %}
-            <li>
-                <a href="{% url 'livros:detalhe' livro.pk %}">{{ livro.titulo }}</a>
-                — {{ livro.autor }}
-                {% if not livro.disponivel %}<span class="indisponivel">(emprestado)</span>{% endif %}
-            </li>
+            <a class="cartao" href="{% url 'livros:detalhe' livro.pk %}">
+                <h3>{{ livro.titulo }}</h3>
+                <p>✍️ {{ livro.autor }}</p>
+                <p>📅 {{ livro.ano }} · 🏷️ {{ livro.categoria.nome }}</p>
+                {% if livro.disponivel %}
+                    <span class="etiqueta disponivel">Disponível</span>
+                {% else %}
+                    <span class="etiqueta emprestado">Emprestado</span>
+                {% endif %}
+            </a>
         {% endfor %}
-        </ul>
+        </div>
     {% else %}
-        <p>Nenhum livro cadastrado. Cadastre pelo <a href="/admin/">admin</a>.</p>
+        <div class="vazio">
+            <p>Nenhum livro cadastrado ainda.</p>
+            <a class="botao" href="/admin/">Cadastrar pelo Admin</a>
+        </div>
     {% endif %}
 {% endblock %}

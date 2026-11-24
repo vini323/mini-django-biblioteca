@@ -3,19 +3,42 @@
 {% block titulo %}{{ livro.titulo }}{% endblock %}
 
 {% block conteudo %}
-    <h1>{{ livro.titulo }}</h1>
-    <p><strong>Autor:</strong> {{ livro.autor }}</p>
-    <p><strong>Ano:</strong> {{ livro.ano }}</p>
-    <p><strong>Categoria:</strong> {{ livro.categoria.nome }}</p>
-    <p><strong>Status:</strong> {{ livro.disponivel|yesno:"Disponível,Emprestado" }}</p>
-    <p><small>Cadastrado em {{ livro.criado_em|date:"d/m/Y H:i" }}</small></p>
-    <h2>Empréstimos</h2>
-    {% for emp in livro.emprestimos.all %}
-        <p>{{ emp.leitor.nome }} — {{ emp.data_emprestimo|date:"d/m/Y" }}
-           {% if emp.data_devolucao %}(devolvido em {{ emp.data_devolucao|date:"d/m/Y" }}){% else %}(em aberto){% endif %}</p>
-    {% empty %}
-        <p>Nenhum empréstimo.</p>
-    {% endfor %}
+    <div class="cartao">
+        <h2>{{ livro.titulo }}</h2>
+        <p><strong>Autor:</strong> {{ livro.autor }}</p>
+        <p><strong>Ano:</strong> {{ livro.ano }}</p>
+        <p><strong>Categoria:</strong> {{ livro.categoria.nome }}</p>
+        {% if livro.disponivel %}
+            <span class="etiqueta disponivel">Disponível</span>
+        {% else %}
+            <span class="etiqueta emprestado">Emprestado</span>
+        {% endif %}
+        <p><small>Cadastrado em {{ livro.criado_em|date:"d/m/Y H:i" }}</small></p>
+    </div>
 
-    <a href="{% url 'livros:lista' %}">← Voltar</a>
+    <div class="cartao" style="margin-top: 20px;">
+        <h3>Empréstimos</h3>
+        {% if livro.emprestimos.all %}
+            <table>
+                <tr><th>Leitor</th><th>Emprestado em</th><th>Situação</th></tr>
+                {% for emp in livro.emprestimos.all %}
+                <tr>
+                    <td>{{ emp.leitor.nome }}</td>
+                    <td>{{ emp.data_emprestimo|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if emp.data_devolucao %}
+                            <span class="etiqueta disponivel">Devolvido {{ emp.data_devolucao|date:"d/m/Y" }}</span>
+                        {% else %}
+                            <span class="etiqueta emprestado">Em aberto</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>Este livro ainda não foi emprestado.</p>
+        {% endif %}
+    </div>
+
+    <a class="botao" href="{% url 'livros:lista' %}">← Voltar para a lista</a>
 {% endblock %}
