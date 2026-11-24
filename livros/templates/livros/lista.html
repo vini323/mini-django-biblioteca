@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block titulo %}Livros{% endblock %}
+
+{% block conteudo %}
+    <h1>Livros ({{ total }})</h1>
+
+    {% if livros %}
+        <ul>
+        {% for livro in livros %}
+            <li>
+                <a href="{% url 'livros:detalhe' livro.pk %}">{{ livro.titulo }}</a>
+                — {{ livro.autor }}
+                {% if not livro.disponivel %}<span class="indisponivel">(emprestado)</span>{% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nenhum livro cadastrado. Cadastre pelo <a href="/admin/">admin</a>.</p>
+    {% endif %}
+{% endblock %}

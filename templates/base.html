@@ -1,0 +1,23 @@
+{# TEMPLATE BASE: os outros templates "herdam" dele com {% extends %} #}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block titulo %}Biblioteca{% endblock %}</title>
+    <style>
+        body { font-family: sans-serif; max-width: 700px; margin: 40px auto; }
+        nav a { margin-right: 12px; }
+        .indisponivel { color: #a00; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'livros:lista' %}">Todos</a>
+        <a href="{% url 'livros:disponiveis' %}">Disponíveis</a>
+        <a href="{% url 'livros:sobre' %}">Sobre</a>
+        <a href="/admin/">Admin</a>
+    </nav>
+    <hr>
+    {% block conteudo %}{% endblock %}
+</body>
+</html>
